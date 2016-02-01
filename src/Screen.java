@@ -15,7 +15,7 @@ public class Screen extends Bitmap {
         source = -1;
         init2 = false;
         rot = 0;
-        index = 0;
+        index = -1;
         feedPos = width;
         init = false;
         panel = new Bitmap(width, height / 5);
@@ -30,11 +30,10 @@ public class Screen extends Bitmap {
     public void render(Data data, InputHandler inputHandler) {
         clear();
         //renderFeedButton(data, inputHandler);
-        if (feedPos < -data.statuses[index].length() * 24
+        if (index == -1 || feedPos < -data.statuses[index].length() * 24
                 || !init || !init2) {
             feedPos = width + data.statuses.length;
-            if (index > 0)
-                index = (index + 1) % data.statuses.length;
+            index = (index + 1) % data.statuses.length;
             renderBackground(data);
             renderProfile(data);
             //renderBanner(data);
