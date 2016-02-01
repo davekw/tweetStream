@@ -33,7 +33,8 @@ public class Screen extends Bitmap {
         if (feedPos < -data.statuses[index].length() * 24
                 || !init || !init2) {
             feedPos = width + data.statuses.length;
-            index = (index + 1) % data.statuses.length;
+            if (index > 0)
+                index = (index + 1) % data.statuses.length;
             renderBackground(data);
             renderProfile(data);
             //renderBanner(data);
