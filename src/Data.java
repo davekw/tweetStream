@@ -23,7 +23,9 @@ public class Data {
 
 
     public Data() {
-        someone = "frailmary";
+        // = "<person's username>"
+        someone = "hoyahacks"; //edit this in order to change timeline source
+        
         time = 0;
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
@@ -36,7 +38,8 @@ public class Data {
                         ("yq9BZMfpEbc27pO7Q2qRBq3ZB2ywR7WHCSssjCibKAhQI");
         twitter = new TwitterFactory(cb.build()).getInstance();
 
-        makeSource(1);
+        // 1 = "someone"'s timeline, -1 = your news feed
+        makeSource(1); //edit this in order to toggle your feed and "someone"'s timeline
     }
 
     public void tick() {
