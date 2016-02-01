@@ -1,2 +1,2 @@
 # tweetStream
-giving the ability to stream live twitter feed afk
+Uses twitter API for  the ability to live stream both your twitter feed
