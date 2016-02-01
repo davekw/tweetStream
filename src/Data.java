@@ -23,23 +23,27 @@ public class Data {
 
 
     public Data() {
-        // = "<person's username>"
-        someone = "hoyahacks"; //edit this in order to change timeline source
-        
+        someone = "hoyahacks";
         time = 0;
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("2UtoUBRAmiD6BOO8l6eE5jWzq")
+
+        //-----------------
+        /**configure this section via
+         * https://apps.twitter.com/app/new
+         * to see your own twitter feed*/
+        /*cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(consumerKey)
                 .setOAuthConsumerSecret
-                        ("ZiLwrNIBJLFSZOLVAwe26Vjn3tGuETGRt6F4IjRhmrZJ70erCA")
+                        (consumerSecret);
                 .setOAuthAccessToken
-                        ("1277886414-jkEdqFpYPOBkqsDlQJF2uxQ2Mnr2BCj5rZrSojE")
+                        (accessToken)
                 .setOAuthAccessTokenSecret
-                        ("yq9BZMfpEbc27pO7Q2qRBq3ZB2ywR7WHCSssjCibKAhQI");
+                        (accessTokenSecret);*/
+
         twitter = new TwitterFactory(cb.build()).getInstance();
 
-        // 1 = "someone"'s timeline, -1 = your news feed
-        makeSource(1); //edit this in order to toggle your feed and "someone"'s timeline
+        //also make this parameter 2 in order to see your own twitter feed
+        makeSource(1);
     }
 
     public void tick() {
