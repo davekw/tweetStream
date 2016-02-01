@@ -23,7 +23,7 @@ public class Data {
 
 
     public Data() {
-        someone = "hoyahacks";
+        someone = "frailmary";
         time = 0;
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
@@ -73,7 +73,8 @@ public class Data {
                 descriptions[i] = feed.get(i).getUser().getDescription();
                 locations[i] = feed.get(i).getUser().getLocation();
                 statuses[i] = feed.get(i).getText();
-                times[i] = feed.get(i).getUser().getCreatedAt().toString();
+                times[i] = feed.get(i).getCreatedAt().toString();
+                statuses[i] = feed.get(i).getText();
                 names[i] = feed.get(i).getUser().getName();
                 names2[i] = feed.get(i).getUser().getScreenName();
                 bannerUrls[i] =
@@ -109,9 +110,9 @@ public class Data {
                 following[i] = feed.get(i).getUser().getFriendsCount();
                 cols[i] = feed.get(i).getUser().getProfileLinkColor();
                 descriptions[i] = feed.get(i).getUser().getDescription();
-                times[i] = feed.get(i).getUser().getCreatedAt().toString();
                 locations[i] = feed.get(i).getUser().getLocation();
                 statuses[i] = feed.get(i).getText();
+                times[i] = feed.get(i).getCreatedAt().toString();
                 names[i] = feed.get(i).getUser().getName();
                 names2[i] = feed.get(i).getUser().getScreenName();
                 bannerUrls[i] =
