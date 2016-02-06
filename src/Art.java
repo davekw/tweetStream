@@ -11,7 +11,7 @@ public class Art {
     public static Bitmap feed = loadPure("/feed2.png");
 
     /**
-     * Creates bitmap that need post coloring
+     * Creates bitmap that needs post coloring
      *
      * @param fileName The name of the file to be mapped
      * @return a bitmap object to be on the screen
