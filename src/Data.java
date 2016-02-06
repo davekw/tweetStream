@@ -4,7 +4,6 @@ import twitter4j.conf.ConfigurationBuilder;
 import java.util.List;
 
 public class Data {
-
     public int time;
     private Twitter twitter;
     public String[] statuses;
@@ -21,17 +20,20 @@ public class Data {
     public int[] followers;
     public int[] following;
 
-
+    /**
+     * default constructor which also can initialize twitter keys
+     */
     public Data() {
-        someone = "hoyahacks";
+        //change this variable to stream a specific user's timeline
+        someone = "vt_hacks";
         time = 0;
+
         ConfigurationBuilder cb = new ConfigurationBuilder();
 
-        //-----------------
-        /**configure this section via
-         * https://apps.twitter.com/app/new
-         * to see your own twitter feed*/
-        /*cb.setDebugEnabled(true)
+        /*configure this section via
+        https://apps.twitter.com/app/new
+
+        cb.setDebugEnabled(true)
                 .setOAuthConsumerKey(consumerKey)
                 .setOAuthConsumerSecret
                         (consumerSecret);
@@ -42,25 +44,31 @@ public class Data {
 
         twitter = new TwitterFactory(cb.build()).getInstance();
 
-        //also make this parameter 2 in order to see your own twitter feed
-        makeSource(1);
+        //configure these parameters to change twitter viewing
+        tickFeed(someone, true);
     }
 
+    /**
+     * increments timer
+     */
     public void tick() {
         time++;
     }
 
-    public void makeSource(int source) {
-        if (source == 1) {
-            tickSomeone(someone);
-        } else {
-            tickStatus();
-        }
-    }
-
-    private void tickSomeone(String someone) {
+    /**
+     * locates twitter information and assigns variables
+     *
+     * @param someone  Is the person to be used for the timeline
+     * @param yourFeed Is whether or not to view your news feed
+     */
+    private void tickFeed(String someone, boolean yourFeed) {
+        List<Status> feed;
         try {
-            List<Status> feed = twitter.getUserTimeline(someone);
+            if (yourFeed)
+                feed = twitter.getHomeTimeline();
+            else
+                feed = twitter.getUserTimeline(someone);
+
             statuses = new String[feed.size()];
             names = new String[feed.size()];
             names2 = new String[feed.size()];
@@ -82,44 +90,6 @@ public class Data {
                 statuses[i] = feed.get(i).getText();
                 times[i] = feed.get(i).getCreatedAt().toString();
                 statuses[i] = feed.get(i).getText();
-                names[i] = feed.get(i).getUser().getName();
-                names2[i] = feed.get(i).getUser().getScreenName();
-                bannerUrls[i] =
-                        feed.get(i).getUser().getProfileBannerMobileURL();
-                profileUrls[i] = feed.get(i).getUser().
-                        getOriginalProfileImageURLHttps();
-                backgroundUrls[i] = feed.get(i).getUser().
-                        getProfileBackgroundImageUrlHttps();
-            }
-        } catch (TwitterException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void tickStatus() {
-        try {
-            List<Status> feed = twitter.getHomeTimeline();
-            statuses = new String[feed.size()];
-            names = new String[feed.size()];
-            names2 = new String[feed.size()];
-            locations = new String[feed.size()];
-            times = new String[feed.size()];
-            bannerUrls = new String[feed.size()];
-            profileUrls = new String[feed.size()];
-            descriptions = new String[feed.size()];
-            backgroundUrls = new String[feed.size()];
-            cols = new String[feed.size()];
-            followers = new int[feed.size()];
-            following = new int[feed.size()];
-            for (int i = 0; i < feed.size(); i++) {
-                followers[i] = feed.get(i).getUser().getFollowersCount();
-                following[i] = feed.get(i).getUser().getFriendsCount();
-                cols[i] = feed.get(i).getUser().getProfileLinkColor();
-                descriptions[i] = feed.get(i).getUser().getDescription();
-                locations[i] = feed.get(i).getUser().getLocation();
-                statuses[i] = feed.get(i).getText();
-                times[i] = feed.get(i).getCreatedAt().toString();
                 names[i] = feed.get(i).getUser().getName();
                 names2[i] = feed.get(i).getUser().getScreenName();
                 bannerUrls[i] =
