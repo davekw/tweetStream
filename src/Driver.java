@@ -5,13 +5,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 public class Driver extends Canvas implements Runnable {
-    /**
-     * fields
-     */
-    private static final int WIDTH = 1360;
-    private static final int HEIGHT = 760;
-    private static final int SCALE = 1;
-    private InputHandler inputHandler;
+    private static int width;
+    private static int height;
     private Screen screen;
     private BufferedImage img;
     private int[] pixels;
@@ -20,28 +15,22 @@ public class Driver extends Canvas implements Runnable {
     private Data data;
 
     /**
-     * constructor
+     * default constructor
      */
     public Driver() {
         //size
-        Dimension size = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        width = (int) screenSize.getWidth();
+        height = (int) screenSize.getHeight();
+        Dimension size = new Dimension(width, height);
         setSize(size);
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
 
         //screen
         data = new Data();
-        screen = new Screen(WIDTH, HEIGHT, data);
-
-        inputHandler = new InputHandler(WIDTH, HEIGHT, SCALE);
-        addKeyListener(inputHandler);
-        addMouseMotionListener(inputHandler);
-        addMouseListener(inputHandler);
-        setFocusable(true);
+        screen = new Screen(width, height);
 
         //image
-        img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
     }
 
@@ -70,14 +59,11 @@ public class Driver extends Canvas implements Runnable {
 
     @Override
     public void run() {
-        int frames = 0;
 
         double unprocessedSeconds = 0;
         long lastTime = System.nanoTime();
         double secondsPerTick = 1 / 60.0;
         int tickCount = 0;
-
-        requestFocus();
 
         while (running) {
             long now = System.nanoTime();
@@ -96,15 +82,12 @@ public class Driver extends Canvas implements Runnable {
 
                 tickCount++;
                 if (tickCount % 60 == 0) {
-                    System.out.println(frames + " fps");
                     lastTime += 1000;
-                    frames = 0;
                 }
             }
 
             if (ticked) {
                 render();
-                frames++;
             } else {
                 try {
                     Thread.sleep(1);
@@ -117,7 +100,7 @@ public class Driver extends Canvas implements Runnable {
     }
 
     /**
-     * game logic processing
+     * data processing
      */
     private void tick() {
         data.tick();
@@ -134,29 +117,34 @@ public class Driver extends Canvas implements Runnable {
         }
 
         //render screen
-        screen.render(data, inputHandler);
+        screen.render(data);
 
         //update canvas img
-        for (int i = 0; i < WIDTH * HEIGHT; i++) {
+        for (int i = 0; i < width * height; i++) {
             pixels[i] = screen.pixels[i];
         }
 
         Graphics g = bs.getDrawGraphics();
-        g.drawImage(img, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+        g.drawImage(img, 0, 0, width, height, null);
         g.dispose();
         bs.show();
     }
 
+    /**
+     * main
+     *
+     * @throws Exception
+     */
     public static final void main(final String[] args) throws Exception {
         Driver session = new Driver();
         JFrame frame = new JFrame("tweetStream");
         frame.setResizable(false);
-
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(session, BorderLayout.CENTER);
 
         frame.setContentPane(panel);
         frame.pack();
+
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
