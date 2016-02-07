@@ -14,4 +14,4 @@ To see someone's twitter timeline
 * edit the 'someone' variable in Data class
 
 To see your own twitter feed
-* edit the boolean parameter in tickFeed() method all in Data class to true
+* edit the boolean parameter in Data Class's tickFeed method to true
